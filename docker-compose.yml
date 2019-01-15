@@ -1,0 +1,28 @@
+version: '3.2'
+
+services: 
+  docker-mysql:
+    image: mysql:latest
+    volumes:
+      - type: bind
+        source: ./script/db
+        target: /docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootPwd
+      - MYSQL_USER=taskorganizer
+      - MYSQL_DATABASE=task_organizer
+      - MYSQL_PASSWORD=pa$$word
+  docker-task-organizer:
+    image: pjt/task-organizer
+    depends_on:
+      - docker-mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=docker-mysql
+      - DATABASE_USER=taskorganizer
+      - DATABASE_PASSWORD=pa$$word
+      - DATABASE_NAME=task_organizer
+      - DATABASE_PORT=3306
