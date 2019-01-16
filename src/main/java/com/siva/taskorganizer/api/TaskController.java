@@ -22,10 +22,10 @@ public class TaskController {
     /*
      * POST http://localhost:8081/api/task
      * */
-    @PostMapping(value="/api/task", produces = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value="/auth/api/task", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes= MediaType.APPLICATION_JSON_VALUE)
     public Task addUser(@RequestBody Task task){
-        return taskService.addUser(task);
+        return taskService.addTask(task);
     }
 
     /*

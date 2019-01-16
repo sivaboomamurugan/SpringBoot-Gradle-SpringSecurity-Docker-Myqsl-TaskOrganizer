@@ -14,6 +14,16 @@ import javax.persistence.ManyToOne;
 @Entity(name = "user_task_mapping")
 public class UserTaskMapping {
 
+    public UserTaskMapping() {
+
+    }
+
+    public UserTaskMapping(User user, Task task, boolean isCompleted ) {
+        this.user = user;
+        this.task = task;
+        this.completed = isCompleted;
+    }
+
     public Integer getId() {
         return id;
     }

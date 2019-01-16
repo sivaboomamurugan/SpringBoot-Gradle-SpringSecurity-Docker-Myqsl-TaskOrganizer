@@ -10,12 +10,22 @@ import javax.persistence.Id;
  */
 @Entity(name = "user")
 public class User {
+
+    public User() {
+
+    }
+    public User(User user) {
+        this.username = user.username;
+        this.password = user.password;
+        this.userid = user.userid;
+    }
+
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

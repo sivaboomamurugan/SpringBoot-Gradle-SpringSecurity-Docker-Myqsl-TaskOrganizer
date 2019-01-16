@@ -1,11 +1,15 @@
 package com.siva.taskorganizer.service;
 
+import com.siva.taskorganizer.domain.LoginUserDetails;
 import com.siva.taskorganizer.domain.Task;
+import com.siva.taskorganizer.domain.User;
 import com.siva.taskorganizer.repository.TaskRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,7 +30,7 @@ public class TaskService {
         return tasks;
     }
 
-    public Task addUser(Task task) {
+    public Task addTask(Task task) {
         Task addedTask = repository.save(task);
         return addedTask;
 
@@ -38,6 +42,11 @@ public class TaskService {
         } else {
             return null;
         }
+    }
+
+    public Task findByTaskName(Task task) {
+        Optional<Task> optionalTask = repository.findByTaskname(task.getTaskname());
+        return optionalTask.orElseGet(() -> addTask(task));
     }
 
 }

@@ -31,7 +31,7 @@ public class UserController {
     /*
      * GET http://localhost:8081/api/user
      * */
-    @GetMapping(value="/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/auth/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getUsers(){
         return userService.findAll();
     }
