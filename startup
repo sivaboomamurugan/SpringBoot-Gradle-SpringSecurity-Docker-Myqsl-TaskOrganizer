@@ -1,4 +1,5 @@
-#/bin/bash
+#!/bin/bash
 docker container prune
 docker image prune
 gradle clean build docker
+docker-compose up

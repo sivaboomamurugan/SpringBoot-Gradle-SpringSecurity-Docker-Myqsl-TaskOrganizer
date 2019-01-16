@@ -59,6 +59,8 @@ I could not integrate the service with the UI layer. I couldn't get time to do t
 ### High-level implementation detail
 Two docker images will be generated, one for the service and the other for database. The schema file(schema.sql) would be copied into the container mysql docker init directory for the tables to be created at the startup. I did not mention any data store location for mysql container.
 
+Service container will wait until the mysql container is started, this is guaranteed by the start.sh, which is the entry point of the service container.
+
 Basically the service exposes two kinds of API, one that requires authentication and other unauthenticated. All authentication(login) and session maintenance will be handled by spring security. The credentials are persisted in the database. We can trim down the unauthenticated API to just the sign-up, but I just for debugging purpose have few GET ALL api's exposed in the unauthenticated endpoint.
 
 Once the user log's in, his session is established and he does not have to login back to access a different API. For security purpose, all the mapping api's are taking the implicit logged in user. This data is retrieved from the security context.
@@ -87,7 +89,13 @@ CRUD operation except delete is implemented for all the tables, but we can trim 
     - Userservice : Move the authentication logic over there.
     - Data access Service : We can hide the DB completely with a Data access service layer and make the Rest service call the Data access service
     - Web UI : This will be the final piece, Web UI -> Rest Service -> UserService -> Data Access service.
-    
+   
+### How to start the application
+git checkout the code
+under the project root directory execute the below command, this cleans images, containers, builds and starts the containers
+
+    -
+    y | ./startup    
 ### API
 
 All authorization and API calls are tested using Postman, session can be established in postman.
