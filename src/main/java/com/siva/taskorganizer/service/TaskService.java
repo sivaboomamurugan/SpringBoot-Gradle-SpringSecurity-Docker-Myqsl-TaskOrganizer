@@ -7,6 +7,8 @@ import com.siva.taskorganizer.repository.TaskRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +26,8 @@ public class TaskService {
         this.repository = taskRepository;
     }
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public List<Task> findAll() {
         List<Task> tasks = new ArrayList<Task>();
         repository.findAll().forEach(tasks::add);
@@ -31,6 +35,7 @@ public class TaskService {
     }
 
     public Task addTask(Task task) {
+        logger.debug(String.format("%s does not exist, hence creating it",task.getTaskname()));
         Task addedTask = repository.save(task);
         return addedTask;
 

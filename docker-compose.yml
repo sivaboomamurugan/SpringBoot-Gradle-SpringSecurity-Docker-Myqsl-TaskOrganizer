@@ -4,6 +4,7 @@ services:
   docker-mysql:
     image: mysql:latest
     volumes:
+      - my-datavolume:/var/lib/mysql
       - type: bind
         source: ./script/db
         target: /docker-entrypoint-initdb.d
@@ -26,3 +27,5 @@ services:
       - DATABASE_PASSWORD=pa$$word
       - DATABASE_NAME=task_organizer
       - DATABASE_PORT=3306
+volumes:
+  my-datavolume:

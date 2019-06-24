@@ -6,16 +6,14 @@ import com.siva.taskorganizer.domain.User;
 import com.siva.taskorganizer.domain.UserTaskMapping;
 import com.siva.taskorganizer.domain.UserTaskMappingModel;
 import com.siva.taskorganizer.service.TaskService;
-import com.siva.taskorganizer.service.UserService;
 import com.siva.taskorganizer.service.UserTaskMappingService;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +31,8 @@ public class UserTaskMappingController {
     @Autowired
     private TaskService taskService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /*
      * POST http://localhost:8081/auth/api/userTaskMapping
      * PUT http://localhost:8081/auth/api/userTaskMapping
@@ -40,6 +40,8 @@ public class UserTaskMappingController {
     @RequestMapping(value="/auth/api/usertaskmapping", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes= MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.POST, RequestMethod.PUT})
     public UserTaskMapping addUserTaskMapping(@RequestBody UserTaskMappingModel userTaskMappingModel){
+        logger.debug(String.format("%s task mapping requested for user %s",
+                userTaskMappingModel.getTask().getTaskname(), getCurrentUser().getUsername()));
         UserTaskMapping userTaskMapping = getUserTaskMapping(userTaskMappingModel);
         return userTaskMappingService.addUserTaskMapping(userTaskMapping);
     }
@@ -62,6 +64,7 @@ public class UserTaskMappingController {
      * */
     @GetMapping(value="/auth/api/usertaskmapping", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserTaskMapping> getUserTaskMappings(){
+        logger.debug(String.format("Get task mapping requested for user %s", getCurrentUser().getUsername()));
         User user = getCurrentUser();
         return userTaskMappingService.findByUser(user);
     }
@@ -76,6 +79,7 @@ public class UserTaskMappingController {
     }
 
     private UserTaskMapping getUserTaskMapping(@RequestBody UserTaskMappingModel userTaskMappingModel) {
+        logger.debug(String.format("Get all user task mapping requested by user %s", getCurrentUser().getUsername()));
         User user = getCurrentUser();
         Task task = getActualTask(userTaskMappingModel.getTask());
         return new UserTaskMapping(user, task, userTaskMappingModel.isCompleted());
